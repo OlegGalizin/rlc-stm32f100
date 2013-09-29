@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<ProjectWorkspace xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_mpw.xsd">
+
+  <SchemaVersion>1.0</SchemaVersion>
+
+  <Header>### uVision Project, (C) Keil Software</Header>
+
+  <WorkspaceName>WorkSpace</WorkspaceName>
+
+  <project>
+    <PathAndName>.\RLC.uvproj</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+  </project>
+
+  <project>
+    <PathAndName>.\event.uvproj</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\LCD_N1202.uvproj</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\RLC_TEST.uvproj</PathAndName>
+  </project>
+
+</ProjectWorkspace>
