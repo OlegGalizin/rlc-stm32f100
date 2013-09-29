@@ -110,7 +110,7 @@ void SetTheFrenq(uint8_t Frenq)
   TIM2->SMCR = TIM_SMCR_SMS_1|TIM_SMCR_SMS_2;  /* Internal trigger 0 - TIM1 is TRGI waiting start */
   ResetZm();
   AdcDelay(5);
-  LoadCalibrationFlag = 0; // Предыдущая О-Ш калибровка недействительна
+  OperativeCalibrationFlag = 0; // Предыдущая О-Ш калибровка недействительна
 }
 
 
@@ -241,6 +241,7 @@ void Init(void)
 #if defined(TEST_CALCZ)
 #include "calcz.h"
 #endif
+
 #if defined(TEST_CALIBR)
 #include "calibration.h"
 #endif

@@ -5,7 +5,8 @@
 #include "main.h"
 
 
-uint8_t FixDiapason; // Признак отключения автовыбора диапазона
+uint8_t AutoDiapason = AUTO_DIAPASON_ON|AUTO_DIAPASON_CHECK; // Признак отключения автовыбора диапазона
+float MsePrev; // Предыдущая относительная ошибка
 
 #define ZARRAYSIZE 6 // Размер массивю Время измерения = (ZARRAYSIZE*2 + 2)*0.1сек
 static Complex_t VArray[ZARRAYSIZE]; // Массив для хранения измерений напряжения
@@ -60,7 +61,7 @@ uint8_t CalculationZm(void)
   }
 #endif
 
-  if ( ( FixDiapason == 0) && // Автоматическая смена диапазона включена
+  if ( ( AutoDiapason & AUTO_DIAPASON_ON) && // Автоматическая смена диапазона включена
        ( DeltaDiapason != 0) ) // Если требуется смена диапазона 
   {
      NewDiapason = CurrentDiapason + DeltaDiapason; // Новый диапазон относительно текущего
@@ -125,6 +126,7 @@ uint8_t CalculationZm(void)
     if ( (MFlags & MFLAG_M) == 0)
     {
       // Дополнительная задержка перед началом измерения
+      ResetZm();
       AdcDelay(2);
       MFlags |= MFLAG_M;
       return 3; // Задержка перед измерением
@@ -210,9 +212,18 @@ GetResult:
 int8_t CheckDiapason(void)
 {
   int8_t Ret = 0;
+  static uint8_t StepCounter;
   
   if ( Step == 0 )
-    Step++;
+  {
+    if (StepCounter > 0)
+    {
+      Step++;
+      StepCounter--;
+    }
+  }
+  else
+    StepCounter = 20;
   if (MFlags & MFLAG_SLOW)
     Step = 1;
 
@@ -238,9 +249,13 @@ int8_t CheckDiapason(void)
           Ret = -1;
     }
     if ( OverloadFlag > 0 ) // Произошло нормальное измерение - можно сбросить флаг перегрузки
+    {
       OverloadFlag--;
+      if (OverloadFlag == 0)
+        ResetZm(); // Перегрузка закончилась. То что было до этого - недействительно
+    }
   }
-  if ( Step > 1  )
+  if ( Step > 0  )
     Step--;
 
   if ((MFlags & MFLAG_V) == 0)  // Ток смещает диапазон в другую сторону
@@ -252,11 +267,12 @@ int8_t CheckDiapason(void)
 
 void ResetZm(void)
 {
-  ZmSum.Re = 0;
-  ZmSum.Im = 0;
+  ZmSum.Re = 0.0f;
+  ZmSum.Im = 0.0f;
 #if defined(MSE)
-  SqZmSumReal = 0;
-  SqZmSumImag = 0;
+  SqZmSumReal = 0.0f;
+  SqZmSumImag = 0.0f;
+  MsePrev = 10000.0f;
 #endif
   ZmMeasCount = 0;
   AdcEvCounter = 0;
@@ -269,8 +285,8 @@ void ResetZm(void)
 #include "itoa.h"
 
 #if  defined(AUTO_RESET)
-float PrevImMse;
-float PrevReMse;
+//float PrevImMse;
+float PrevMse;
 #endif
 
 void CalculationZ(void)
@@ -281,7 +297,7 @@ void CalculationZ(void)
   {
     ResetZm();
     LcdClear();
-		FixDiapason = 0;
+		AutoDiapason = AUTO_DIAPASON_CHECK|AUTO_DIAPASON_ON;
     return;
   }
   if ((Event & EV_MASK) == EV_KEY_PRESSED) 
@@ -293,7 +309,7 @@ void CalculationZ(void)
       case KEY_UP:
         if ( CurrentDiapason < 16 )
         {
-					FixDiapason = 1;
+					AutoDiapason = 0;
           CurrentDiapason++;
           ResetZm();
           LcdClear();
@@ -302,7 +318,7 @@ void CalculationZ(void)
       case KEY_DOWN:
         if ( CurrentDiapason > 0 )
         {
-					FixDiapason = 1;
+					AutoDiapason = 0;
           CurrentDiapason--;
           ResetZm();
           LcdClear();
@@ -323,6 +339,8 @@ redraw:
     float Av;
 #if defined(MSE)
     float mse;
+    float mseRe;
+    float AvRe;
 #if  defined(AUTO_RESET)
     uint8_t ResetFlag = 0;
 #endif
@@ -332,11 +350,13 @@ redraw:
     OutFloat(X_POSITION*0+Y_POSITION*2+MUL2, Av , ' '); // вывод лействит части
 #if defined(MSE)
     mse = sqrtf((SqZmSumReal/ZmMeasCount - Av*Av)/ZmMeasCount/(ZmMeasCount - 1)); // Расчет отклонения действит части
+    AvRe = Av;
     Av = mse/Av*1000; // Отклонение в процентах
     if ( Av < 0)
       Av = Av * -1;
-    OutFloat(X_POSITION*5+Y_POSITION*4, Av , '%'); // Вывод относительного отклонения действит значения
-#if  defined(AUTO_RESET)
+    OutFloat(X_POSITION*7+Y_POSITION*4, Av , '%'); // Вывод относительного отклонения действит значения
+    mseRe = mse;
+#if  0
     if (ZmMeasCount > 12 && Av > 1e-2f )
     {
       if (Av > PrevReMse ) // Ошибка увеличилась
@@ -353,18 +373,28 @@ redraw:
     Av = mse/Av*1000; // Отклонение в процентах
     if ( Av < 0)
       Av = Av * -1;
-    OutFloat(X_POSITION*5+Y_POSITION*7, Av , '%'); // Вывод относит отлония мнимой части
+    OutFloat(X_POSITION*7+Y_POSITION*7, Av , '%'); // Вывод относит отлония мнимой части
+    mse += mseRe;
+    Av = ZmSum.Im/ZmMeasCount;  // Расчет мнимого среднего
+    if ( Av < 0 )
+      Av = -Av;
+    if (AvRe < 0 )
+    AvRe = -AvRe;
+    Av += AvRe;
+    Av = mse/Av*1000;
+    OutFloat(X_POSITION*0+Y_POSITION*7, Av , '%'); // Вывод относит отлония 
+
 #if  defined(AUTO_RESET)
-    if (ZmMeasCount > 12 && Av > 1e-2f )
+    if (ZmMeasCount > 12 && Av > 0.1f )
     {
-      if (Av > PrevImMse ) // Ошибка увеличилась
+      if (Av > PrevMse ) // Ошибка увеличилась
         ResetFlag++; // Начать счет заново
-      PrevImMse = Av; // Сохранить предыдущее отклонение
+      PrevMse = Av; // Сохранить предыдущее отклонение
     }
     if ( ResetFlag )
     {
       ResetZm();
-      PrevReMse = PrevImMse = 10000.0f;
+      PrevMse = 10000.0f;
     }
 #endif
 #endif

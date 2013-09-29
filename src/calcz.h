@@ -5,7 +5,11 @@
 #include "compl.h"
 #include "adc.h"
 #include "event.h"
-extern uint8_t FixDiapason; // Отключение функции автовыбора диапазона
+extern uint8_t AutoDiapason; // автовыбор диапазона и режим автовыбора
+#define AUTO_DIAPASON_ON    0x1 // Включен автовыбор диапазона
+#define AUTO_DIAPASON_CHECK 0x2 // + сброс при увеличении ошибки - иначе толко при смене диапазона
+#define AUTO_DIAPASON_RESET  0x4 // + Сброс после каждого измерения
+
 extern uint8_t OverloadFlag; // Флаг перегрузки. Проверять после вызова CalculationZm
 
 void ResetZm(void); // Функция принудительного сброса намерянного
@@ -18,6 +22,7 @@ extern Complex_t ZmSum; //Результат - Сумма результатов измерения Z
 #if defined(MSE)
 extern float SqZmSumReal; //Рузультат - сумма квадратов действительной части Z
 extern float SqZmSumImag;//Рузультат - сумма квадратов мнимой части Z
+extern float MsePrev; // Предыдущая ошибка
 #endif
 extern uint32_t ZmMeasCount;//Результат - количество измерений Z
 

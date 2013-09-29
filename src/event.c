@@ -185,6 +185,7 @@ void EVENT_HANDLE_NAME(TIMER_NUM,_IRQHandler)(void)
 #if defined(MENU_DEMO)
 
 #include "n1202.h"
+#include "io.h"
 
 void SystemInit()
 {
@@ -227,19 +228,14 @@ void MainMenu()
       case KEY_ENTER:
         switch(MenuCounter)
         {
-          case 4:
+          case 4: // Установка контрастности
             CurrentFunc(Contrast);
             break;
-#if defined(FLOAT_DEMO)
-          case 2:
-            CurrentFunc(FloatChange;)
-            break;
-#endif
           case 5:
-            GPIOB->ODR ^= (1<<15);
+            GPIO_TOGGLE(LCD_LED);
             break;
           case 6:
-            GPIOA->BRR = (1<<12);
+            GPIO_RESET(PWR_ON);
             break;
           default:
             CurrentFunc(MenuSelected;)
@@ -320,6 +316,7 @@ redraw:
 }
 
 int LongCounter;
+void EventIdle(void) {};
 
 void StartFunction(void)
 {
@@ -362,8 +359,8 @@ void StartFunction(void)
   KeyArray[0] = Event & KEY1 ? '*':'-';
   KeyArray[1] = Event & KEY2 ? '*':'-';
   KeyArray[2] = Event & KEY3 ? '*':'-';
-  KeyArray[3] = Event & KEY4 ? '*':'-';
-  KeyArray[4] = Event & KEY5 ? '*':'-';
+//  KeyArray[3] = Event & KEY4 ? '*':'-';
+//  KeyArray[4] = Event & KEY5 ? '*':'-';
   LcdChr(Y_POSITION*(MenuCounter%8+1) + X_POSITION * 7 + 5, KeyArray);
 
   {
@@ -384,19 +381,43 @@ void StartFunction(void)
 int main()
 {
   CurrentFunc(StartFunction);
-  /* init hardware */
-  SCB->VTOR = FLASH_BASE;
-  /* CLOCK = 8MHz / 8 = 1 MHz */
-  RCC->CFGR |= RCC_CFGR_HPRE_DIV2|RCC_CFGR_PPRE1_DIV4;
-  RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_IOPBEN |RCC_APB2ENR_AFIOEN;
-  RCC->APB1ENR |= RCC_APB1ENR_TIM3EN|RCC_APB1ENR_TIM2EN; 
 
-  GPIOA->CRH &= ~((GPIO_CRL_MODE0|GPIO_CRL_CNF0) << (4*(12-8))); /* PA10 */
-  GPIOA->CRH |= (GPIO_CRL_MODE0_1 << (4*(12-8))); /* PA12 - out push-pull*/
-  GPIOA->BSRR |= 1<<12;
-  GPIOB->CRH &= ~((GPIO_CRL_MODE0|GPIO_CRL_CNF0) << (4*(15-8))); /* PA10 */
-  GPIOB->CRH |= (GPIO_CRL_MODE0_1 << (4*(15-8))); /* PA12 - out push-pull*/
-  GPIOB->BSRR |= 1<<15;
+  RCC->CFGR |= RCC_CFGR_HPRE_DIV2|RCC_CFGR_PPRE1_DIV4;
+  RCC->APB2ENR |= RCC_APB2ENR_IOPAEN |RCC_APB2ENR_IOPBEN |RCC_APB2ENR_AFIOEN|
+                  RCC_APB2ENR_USART1EN|RCC_APB2ENR_TIM1EN|RCC_APB2ENR_ADC1EN|RCC_APB2ENR_TIM17EN;
+  RCC->APB1ENR |= RCC_APB1ENR_TIM3EN|RCC_APB1ENR_TIM2EN|RCC_APB1ENR_TIM7EN|
+                  RCC_APB1ENR_BKPEN|RCC_APB1ENR_PWREN|RCC_APB1ENR_DACEN; 
+  RCC->AHBENR |= RCC_AHBENR_DMA1EN;
+
+  GPIOB->ODR = 0; /* PB4 is pull up default !!!! */
+  GPIOA->CRL = TO_GPIO_CRL(A, PWR_ON )|TO_GPIO_CRL(A, K3)|TO_GPIO_CRL(A, K2)|TO_GPIO_CRL(A, ADC )|
+               TO_GPIO_CRL(A, INSTR_OUT)|TO_GPIO_CRL(A, DAC_OFF )|TO_GPIO_CRL(A, DAC_M  );
+  GPIOA->CRH = TO_GPIO_CRH(A, LCD_CLK)|TO_GPIO_CRH(A, LCD_DA)|TO_GPIO_CRH(A, LCD_CE)|
+               TO_GPIO_CRH(A, LCD_RESET)|TO_GPIO_CRH(A, LCD_LED);
+  GPIOB->CRL = TO_GPIO_CRL(B, BUT1)|TO_GPIO_CRL(B, BUT2)|TO_GPIO_CRL(B, V_BAT)|
+               TO_GPIO_CRL(B, PROBE1)|TO_GPIO_CRL(B, PROBE2)|TO_GPIO_CRL(B, IV1)|TO_GPIO_CRL(B, IV2);
+  GPIOB->CRH = TO_GPIO_CRH(B, K1)|TO_GPIO_CRH(B, I_V_MEAS)|TO_GPIO_CRH(B, CP0)|TO_GPIO_CRH(B, CP1)|
+               TO_GPIO_CRH(B, BUT3)|TO_GPIO_CRH(B, PWM);
+  GPIOB->BSRR = TO_GPIO_BSRR(B, BUT1)|TO_GPIO_BSRR(B, BUT2)|
+                TO_GPIO_BSRR(B, BUT3)|TO_GPIO_BSRR(B, PROBE1)|TO_GPIO_BSRR(B, PROBE2)|TO_GPIO_BSRR(B, K1);
+  GPIOA->BSRR = TO_GPIO_BSRR(A, K2)|TO_GPIO_BSRR(A, PWR_ON);
+  AFIO->MAPR |= AFIO_MAPR_SWJ_CFG_JTAGDISABLE; /* JTAG as GPIO only SWD */
+  GPIO_SET(PWR_ON);
+
+  //Запуск кварца
+  RCC->CR |= RCC_CR_HSEON;
+  while((RCC->CR & RCC_CR_HSERDY) == 0)
+    ; /* BLANK */
+
+  //запуск PLL
+  RCC->CFGR = RCC_CFGR_PLLXTPRE|RCC_CFGR_PLLMULL4|RCC_CFGR_PLLSRC /* 12 MHz/2*4 from prediv  = 24 MHz*/
+    |RCC_CFGR_ADCPRE_DIV4; // 24/4=6Mhz ADC clock
+  RCC->CR |= RCC_CR_PLLON;
+  while((RCC->CR & RCC_CR_PLLRDY) == 0)
+    ; /* BLANK */
+
+  // переключение на PLL
+  RCC->CFGR |= RCC_CFGR_SW_PLL;
 
 
   LcdInit();

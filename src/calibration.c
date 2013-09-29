@@ -124,7 +124,7 @@ static void CalibrationOut(void)
 //      CalibrationMode = CALIBRATION_MODE_LOAD;
       CurrentDiapason = 0;
       SetDiapason();
-      FixDiapason = 1;
+      AutoDiapason = 0;
       SetAdcInput(MAIN_OUT);
 #if !defined(TEST_ADC)
       CurrentFunc(CalibrationZ);
@@ -304,15 +304,15 @@ static void CalibrationZ()
             {
               if (CalibrationMode == CALIBRATION_MODE_OPEN)
               {
-                Yopen = ComplexDivFloat(1.0f, CalculateZ(1) );
-                LoadCalibrationFlag = 1;
+                Yopen = ComplexDivFloat(1.0f, CalculateZ(0) );
+                OperativeCalibrationFlag = 1;
                 CurrentFunc(MainForm);  // End of O/S calibration
               }
               else
               {
-                Zshort = CalculateZ(1);
+                Zshort = CalculateZ(0);
                 CalibrationMode = CALIBRATION_MODE_OPEN;
-                FixDiapason = 0;
+                AutoDiapason = AUTO_DIAPASON_ON;
                 CurrentFunc(OpenCalibrationStart);  // End of short calibration
               }
               return;
@@ -361,7 +361,7 @@ redraw:
 
     if (Calibration.InvalidFlag == 0)
     {
-      ShowResult(CalculateZ(1));
+      ShowResult(CalculateZ(0));
       return;
     }
 

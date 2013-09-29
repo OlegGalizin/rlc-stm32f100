@@ -7,10 +7,10 @@
 #define SHUNT_SCHEM 0x1
 extern uint8_t EqualSchem;
 extern const float CFrenq[4];
-extern uint8_t LoadCalibrationFlag;
+extern uint8_t OperativeCalibrationFlag;
 extern Complex_t Zshort;
 extern Complex_t Yopen;
-Complex_t CalculateZ(uint8_t NoPercent); // Подсчет комплексного сопротивления без учета O-S калибровки (только load )
+Complex_t CalculateZ(uint8_t AutoMode); // Подсчет комплексного сопротивления без учета O-S калибровки (только load )  AutoMode может содержать бит сброса при увеличении ошибки
 void ShowResult(Complex_t Z);
 void ShowFrenq(void);
 void ShowOverload(void);

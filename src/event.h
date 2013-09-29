@@ -30,8 +30,8 @@ extern void EventIdle(void);
 
 /* Event detect delays (unit is check intervals) */
 #define KEY_PRESSED_VALUE 4 // Press event delay
-#define KEY_LONG_VALUE    140  // Long press event delay
-#define KEY_REPEATE_VALUE 160 // Repeate event delay
+#define KEY_LONG_VALUE    125  // Long press event delay
+#define KEY_REPEATE_VALUE 250 // Repeate event delay KEY_REPEATE_VALUE - KEY_LONG_VALUE - repeate interval
 #define KEY_REALIZE_VALUE 8 //  Realize event detect delay
 
 

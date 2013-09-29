@@ -11,8 +11,7 @@
 uint8_t EqualSchem;
 void MainForm(void);
 
-Complex_t MsePrev;
-uint8_t LoadCalibrationFlag;
+uint8_t OperativeCalibrationFlag;
 Complex_t Zshort;
 Complex_t Yopen;
 
@@ -109,7 +108,7 @@ void ShowResult(Complex_t Z)
   OutFloat(X_POSITION*0+Y_POSITION*5+MUL2, x , c);
 }
 
-Complex_t CalculateZ(uint8_t NoPercent)
+Complex_t CalculateZ(uint8_t AutoMode)
 {
   Complex_t Z;
   Complex_t Zm;
@@ -124,22 +123,24 @@ Complex_t CalculateZ(uint8_t NoPercent)
   Zm.Im = ZmSum.Im/ZmMeasCount;
 
 #if defined(MSE)
-  if ( NoPercent == 0 )
+  if ( AutoMode & AUTO_DIAPASON_CHECK  )
   {
-    Mse = GetPercent(Zm.Re, SqZmSumReal);
-    if ( MsePrev.Re > Mse )
-       MsePrev.Re = Mse;
+    float Abs1;
+    float Abs2;
+
+    Abs1 = Zm.Re;
+    if ( Abs1 < 0 )
+      Abs1 = -Abs1;
+    
+    Abs2 = Zm.Im;
+    if (Abs2 < 0 )
+      Abs2 = -Abs2;
+    Mse = GetPercent(Abs1 + Abs2, SqZmSumReal + SqZmSumImag);
+    if ( MsePrev > Mse )
+       MsePrev = Mse;
     else
-    {
-      if ( Mse > 0.05f )
-        ResetZm();
-    }
-    Mse = GetPercent(Zm.Im, SqZmSumImag);
-    if ( MsePrev.Im > Mse )
-       MsePrev.Im = Mse;
-    else
-    {
-      if ( Mse > 0.05f )
+    { /// Есть тенденция к увеличению ошибки
+      if ( Mse > 0.1f ) // Ошибка увеличилась сильно
         ResetZm();
     }
   }
@@ -193,58 +194,6 @@ Complex_t CalculateZ(uint8_t NoPercent)
   return Z;
 }
 
-
-#if 0
-void MainMenu(void)
-{
-  if ( Event == EV_FUNC_FIRST )
-  {
-    LcdClear();
-    MenuCounter = 0;
-    return;
-  }
-  if ( (Event & EV_MASK) == EV_KEY_PRESSED )
-  {
-    uint16_t Inc = 0; 
-
-    switch (Event & KEY_MASK)
-    {
-      case KEY_DOWN:
-        Inc = 0xFFFF;  // -1
-        break;
-      case KEY_UP:
-        Inc = 1;
-        break;
-      case KEY_ENTER:
-        switch(MenuCounter)
-        {
-          case 0:
-            CurrentFunc(MainForm);
-            return;
-          case 1:
-//            if ( Calibration.InvalidFlag != 0 )
-              CurrentFunc(CalibrationStart);
-            return;
-        }
-    } /* Switch */
-    MenuCounter += Inc;
-    if (MenuCounter > 10)
-      MenuCounter = 1;
-    if (MenuCounter > 1)
-      MenuCounter = 0;
-  } /*if */
-
-  LcdChr(X_POSITION*0+Y_POSITION*0 + 16 + (0==MenuCounter)*INVERSE, "Back");
-  {
-    char* Text = "O/S calibr";
-    if ( Calibration.InvalidFlag != 0 )
-      Text = "Calibration";
-
-    LcdChr(X_POSITION*0+Y_POSITION*1 + 16 + (1==MenuCounter)*INVERSE, Text);
-  }
-}
-#endif
-
 void MainForm(void)
 {
   uint8_t Ret;
@@ -287,6 +236,7 @@ void MainForm(void)
             ResetZm(); /* Start measure at 0 */
             goto redraw;
           case 4:
+            OperativeCalibrationFlag = 0; // Предыдущая О-Ш калибровка недействительна
             CurrentFunc(CalibrationStart); // Калибровка
             return;
           case 5: /* diapason */
@@ -304,11 +254,10 @@ void MainForm(void)
             MenuCounter = 0;
             goto redraw;
           case 6: /* Auto-manual */
-            if ( FixDiapason == 0)
-              FixDiapason = 1;
+            if ( (AutoDiapason & AUTO_DIAPASON_ON) == 0)
+              AutoDiapason = AUTO_DIAPASON_ON|AUTO_DIAPASON_CHECK;
             else
-              FixDiapason = 0;
-            MenuCounter = 0;
+              AutoDiapason = 0;
             goto redraw;
         }
         goto redraw;
@@ -339,7 +288,7 @@ void MainForm(void)
 
     if (MenuCounter == 5) /* Diapason */
     {
-      FixDiapason = 1;
+      AutoDiapason = 0;
       CurrentDiapason += Inc;
       if ( CurrentDiapason > 18 )
         CurrentDiapason = 17;
@@ -350,19 +299,35 @@ void MainForm(void)
     }
   } /* If key pressed event */
 
-  if ( (Event & EV_MASK) == EV_KEY_LONG )
+  if ( MenuCounter != 6) // Во всех режимах кроме автомат-ручной
   {
-    switch (Event & KEY_MASK)
+    if ( (Event & EV_MASK) == EV_KEY_LONG )
     {
-      case KEY_ENTER:
-        GPIO_RESET(PWR_ON);
-        return;
+      switch (Event & KEY_MASK)
+      {
+        case KEY_ENTER:
+          GPIO_RESET(PWR_ON); // Выключение питания при длинном нажатии ENTER
+          return;
+      }
     }
+  }
+  else // В режиме автомат-ручной
+  {
+    if ( (Event & EV_MASK) == EV_KEY_REALIZED &&
+         (Event & KEY_MASK) == KEY_ENTER) // Отпускание enter
+    {
+      MenuCounter = 0; // Покинуть меню
+    }
+    if ( ((Event & EV_MASK) == EV_KEY_REPEATE) &&
+         ((Event & KEY_MASK) == KEY_ENTER)) // Долгое нажатие enter
+    {
+      AutoDiapason++;
+      AutoDiapason &= 0x7; // Вызавает перебор всех 3 битов: 0 - Автвыбор диапазона, 1 - Сброс при увеличении ошибки, 2 - Сброс после каждого измерения
+    }
+    goto redraw;
   }
   return;
 
-
-   
 redraw:
   {
     // Парраллельный или последовательный режим замещения
@@ -389,13 +354,15 @@ redraw:
 
     //Автоматический - ручной выбор диапазона
     {
-      char* ModeA;
+      char ModeA;
 
-      if ( FixDiapason )
-        ModeA = "M";
-      else
-        ModeA = "A";
-      LcdChr(X_POSITION*15+Y_POSITION*0 + 1 + (6==MenuCounter)*INVERSE, ModeA);
+      if ( AutoDiapason == (AUTO_DIAPASON_ON|AUTO_DIAPASON_CHECK) )
+        ModeA = 'A';
+      else if ( AutoDiapason == 0 )
+        ModeA = 'M';
+      else 
+        ModeA = '0' + AutoDiapason;
+      LcdChr(X_POSITION*15+Y_POSITION*0 + 1 + (6==MenuCounter)*INVERSE, &ModeA);
     }
 
     ShowOverload(); // Перегрузка
@@ -454,10 +421,12 @@ Calc:
 
 
 
-  Z = CalculateZ(FixDiapason);  // В ручном режиме не сбрасываем автоматически измерения а всегда накапливаем
+  Z = CalculateZ(AutoDiapason);  // В ручном режиме не сбрасываем автоматически измерения а всегда накапливаем
+  if ( AutoDiapason & AUTO_DIAPASON_RESET )
+    ResetZm();
 
   // We have calculated Z in this place
-  if (LoadCalibrationFlag)
+  if (OperativeCalibrationFlag)
   {
     Complex_t Tmp;
 
@@ -468,7 +437,7 @@ Calc:
     Tmp.Re = 1 - Tmp.Re; /* 1 - (Zm-Zs)/Yo */
     Tmp.Im = - Tmp.Im;
 
-    Z = ComplexMul(Z, Tmp);
+    Z = ComplexDiv(Z, Tmp);
   }
 
   ShowResult(Z);
