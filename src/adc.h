@@ -105,7 +105,10 @@ void AdcDelay(int8_t Count); // Пропустить count циклов измерения
 #if defined(TEST_ADC)
 void TestMenu(void);
 void TestAdcMenu(void);
-
+extern uint32_t HandlerTicks;
+#define    DWT_CYCCNT    *(volatile unsigned long *)0xE0001004
+#define    DWT_CONTROL   *(volatile unsigned long *)0xE0001000
+#define    SCB_DEMCR     *(volatile unsigned long *)0xE000EDFC
 #endif
 
 

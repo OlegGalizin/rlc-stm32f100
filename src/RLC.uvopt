@@ -207,8 +207,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>639</TopLine>
-      <CurrentLine>640</CurrentLine>
+      <TopLine>678</TopLine>
+      <CurrentLine>686</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\adc.c</PathWithFileName>
       <FilenameWithoutPath>adc.c</FilenameWithoutPath>
@@ -221,8 +221,8 @@
       <Focus>0</Focus>
       <ColumnNumber>10</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>421</TopLine>
-      <CurrentLine>440</CurrentLine>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\n1202.c</PathWithFileName>
       <FilenameWithoutPath>n1202.c</FilenameWithoutPath>
@@ -289,10 +289,10 @@
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>24</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
       <TopLine>1</TopLine>
-      <CurrentLine>1</CurrentLine>
+      <CurrentLine>4</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\display_float.c</PathWithFileName>
       <FilenameWithoutPath>display_float.c</FilenameWithoutPath>
@@ -384,33 +384,7 @@
   </Group>
 
   <AlienFiles>
-    <PathWithFilename>d:\E\Aprojects\RLC\v3_01\src\calibration.h</PathWithFilename>
-    <TopLine>1</TopLine>
-    <CurrentLine>1</CurrentLine>
-    <Constant>0</Constant>
-    <WindowPosition>
-      <length>0</length>
-      <flags>0</flags>
-      <showCmd>0</showCmd>
-      <MinPosition>
-        <xPos>0</xPos>
-        <yPos>0</yPos>
-      </MinPosition>
-      <MaxPosition>
-        <xPos>0</xPos>
-        <yPos>0</yPos>
-      </MaxPosition>
-      <NormalPosition>
-        <Top>0</Top>
-        <Left>0</Left>
-        <Right>0</Right>
-        <Bottom>0</Bottom>
-      </NormalPosition>
-    </WindowPosition>
-  </AlienFiles>
-
-  <AlienFiles>
-    <PathWithFilename>d:\E\Aprojects\RLC\v3_01\src\calcz.h</PathWithFilename>
+    <PathWithFilename>d:\E\Aprojects\RLC\rlc-stm32f100\src\calcz.h</PathWithFilename>
     <TopLine>1</TopLine>
     <CurrentLine>9</CurrentLine>
     <Constant>0</Constant>
@@ -436,9 +410,113 @@
   </AlienFiles>
 
   <AlienFiles>
-    <PathWithFilename>d:\E\Aprojects\RLC\v3_01\src\event.h</PathWithFilename>
+    <PathWithFilename>d:\E\Aprojects\RLC\rlc-stm32f100\src\calibration.h</PathWithFilename>
+    <TopLine>1</TopLine>
+    <CurrentLine>1</CurrentLine>
+    <Constant>0</Constant>
+    <WindowPosition>
+      <length>0</length>
+      <flags>0</flags>
+      <showCmd>0</showCmd>
+      <MinPosition>
+        <xPos>0</xPos>
+        <yPos>0</yPos>
+      </MinPosition>
+      <MaxPosition>
+        <xPos>0</xPos>
+        <yPos>0</yPos>
+      </MaxPosition>
+      <NormalPosition>
+        <Top>0</Top>
+        <Left>0</Left>
+        <Right>0</Right>
+        <Bottom>0</Bottom>
+      </NormalPosition>
+    </WindowPosition>
+  </AlienFiles>
+
+  <AlienFiles>
+    <PathWithFilename>d:\E\Aprojects\RLC\rlc-stm32f100\src\event.h</PathWithFilename>
     <TopLine>1</TopLine>
     <CurrentLine>12</CurrentLine>
+    <Constant>0</Constant>
+    <WindowPosition>
+      <length>0</length>
+      <flags>0</flags>
+      <showCmd>0</showCmd>
+      <MinPosition>
+        <xPos>0</xPos>
+        <yPos>0</yPos>
+      </MinPosition>
+      <MaxPosition>
+        <xPos>0</xPos>
+        <yPos>0</yPos>
+      </MaxPosition>
+      <NormalPosition>
+        <Top>0</Top>
+        <Left>0</Left>
+        <Right>0</Right>
+        <Bottom>0</Bottom>
+      </NormalPosition>
+    </WindowPosition>
+  </AlienFiles>
+
+  <AlienFiles>
+    <PathWithFilename>d:\E\Aprojects\RLC\rlc-stm32f100\src\display_float.h</PathWithFilename>
+    <TopLine>1</TopLine>
+    <CurrentLine>6</CurrentLine>
+    <Constant>0</Constant>
+    <WindowPosition>
+      <length>0</length>
+      <flags>0</flags>
+      <showCmd>0</showCmd>
+      <MinPosition>
+        <xPos>0</xPos>
+        <yPos>0</yPos>
+      </MinPosition>
+      <MaxPosition>
+        <xPos>0</xPos>
+        <yPos>0</yPos>
+      </MaxPosition>
+      <NormalPosition>
+        <Top>0</Top>
+        <Left>0</Left>
+        <Right>0</Right>
+        <Bottom>0</Bottom>
+      </NormalPosition>
+    </WindowPosition>
+  </AlienFiles>
+
+  <AlienFiles>
+    <PathWithFilename>d:\E\Aprojects\RLC\rlc-stm32f100\src\adc.h</PathWithFilename>
+    <TopLine>75</TopLine>
+    <CurrentLine>111</CurrentLine>
+    <Constant>0</Constant>
+    <WindowPosition>
+      <length>0</length>
+      <flags>0</flags>
+      <showCmd>0</showCmd>
+      <MinPosition>
+        <xPos>0</xPos>
+        <yPos>0</yPos>
+      </MinPosition>
+      <MaxPosition>
+        <xPos>0</xPos>
+        <yPos>0</yPos>
+      </MaxPosition>
+      <NormalPosition>
+        <Top>0</Top>
+        <Left>0</Left>
+        <Right>0</Right>
+        <Bottom>0</Bottom>
+      </NormalPosition>
+    </WindowPosition>
+  </AlienFiles>
+
+  <AlienFiles>
+    <PathWithFilename>d:\E\Aprojects\RLC\rlc-stm32f100\src\adc_handlers.inc</PathWithFilename>
+    <TopLine>1</TopLine>
+    <CurrentLine>1</CurrentLine>
     <Constant>0</Constant>
     <WindowPosition>
       <length>0</length>
@@ -469,49 +547,43 @@
       <ActiveTab>2</ActiveTab>
       <Documents>
         <Doc>
+          <Name>adc_handlers.inc</Name>
+          <ColumnNumber>0</ColumnNumber>
+          <TopLine>1</TopLine>
+          <CurrentLine>1</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>adc.h</Name>
+          <ColumnNumber>62</ColumnNumber>
+          <TopLine>75</TopLine>
+          <CurrentLine>111</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>.\adc.c</Name>
+          <ColumnNumber>0</ColumnNumber>
+          <TopLine>678</TopLine>
+          <CurrentLine>686</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>display_float.h</Name>
+          <ColumnNumber>12</ColumnNumber>
+          <TopLine>1</TopLine>
+          <CurrentLine>6</CurrentLine>
+        </Doc>
+        <Doc>
           <Name>.\startup_stm32f10x_ld_vl.s</Name>
           <ColumnNumber>0</ColumnNumber>
           <TopLine>148</TopLine>
           <CurrentLine>148</CurrentLine>
         </Doc>
         <Doc>
-          <Name>.\main.c</Name>
-          <ColumnNumber>19</ColumnNumber>
-          <TopLine>240</TopLine>
-          <CurrentLine>253</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>.\adc.c</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>639</TopLine>
-          <CurrentLine>640</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>event.h</Name>
-          <ColumnNumber>13</ColumnNumber>
+          <Name>calcz.h</Name>
+          <ColumnNumber>24</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>12</CurrentLine>
+          <CurrentLine>9</CurrentLine>
         </Doc>
         <Doc>
-          <Name>.\event.c</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>1</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>.\calibration.c</Name>
-          <ColumnNumber>26</ColumnNumber>
-          <TopLine>265</TopLine>
-          <CurrentLine>265</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>.\flash.c</Name>
-          <ColumnNumber>9</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>17</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>.\display_float.c</Name>
+          <Name>calibration.h</Name>
           <ColumnNumber>0</ColumnNumber>
           <TopLine>1</TopLine>
           <CurrentLine>1</CurrentLine>
@@ -523,16 +595,40 @@
           <CurrentLine>357</CurrentLine>
         </Doc>
         <Doc>
-          <Name>calibration.h</Name>
+          <Name>.\display_float.c</Name>
+          <ColumnNumber>24</ColumnNumber>
+          <TopLine>1</TopLine>
+          <CurrentLine>4</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>.\flash.c</Name>
+          <ColumnNumber>9</ColumnNumber>
+          <TopLine>1</TopLine>
+          <CurrentLine>17</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>.\calibration.c</Name>
+          <ColumnNumber>26</ColumnNumber>
+          <TopLine>265</TopLine>
+          <CurrentLine>265</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>.\event.c</Name>
           <ColumnNumber>0</ColumnNumber>
           <TopLine>1</TopLine>
           <CurrentLine>1</CurrentLine>
         </Doc>
         <Doc>
-          <Name>calcz.h</Name>
-          <ColumnNumber>24</ColumnNumber>
+          <Name>event.h</Name>
+          <ColumnNumber>13</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>9</CurrentLine>
+          <CurrentLine>12</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>.\main.c</Name>
+          <ColumnNumber>19</ColumnNumber>
+          <TopLine>240</TopLine>
+          <CurrentLine>253</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

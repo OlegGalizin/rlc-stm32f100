@@ -1,6 +1,7 @@
 #include "display_float.h"
 
 
+/* Buffer for 9 chars */
 void DisplayFloat(char* DisplayBuf, float In)
 {
   int16_t e    = 0;

@@ -196,8 +196,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>148</TopLine>
+      <CurrentLine>148</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\startup_stm32f10x_ld_vl.s</PathWithFileName>
       <FilenameWithoutPath>startup_stm32f10x_ld_vl.s</FilenameWithoutPath>
@@ -285,70 +285,88 @@
       <ActiveTab>2</ActiveTab>
       <Documents>
         <Doc>
+          <Name>d:\E\Aprojects\RLC\rlc-stm32f100\src\adc_handlers.inc</Name>
+          <ColumnNumber>0</ColumnNumber>
+          <TopLine>1</TopLine>
+          <CurrentLine>1</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>d:\E\Aprojects\RLC\rlc-stm32f100\src\adc.h</Name>
+          <ColumnNumber>62</ColumnNumber>
+          <TopLine>75</TopLine>
+          <CurrentLine>111</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>d:\E\Aprojects\RLC\rlc-stm32f100\src\adc.c</Name>
+          <ColumnNumber>0</ColumnNumber>
+          <TopLine>678</TopLine>
+          <CurrentLine>686</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>d:\E\Aprojects\RLC\rlc-stm32f100\src\display_float.h</Name>
+          <ColumnNumber>12</ColumnNumber>
+          <TopLine>1</TopLine>
+          <CurrentLine>6</CurrentLine>
+        </Doc>
+        <Doc>
           <Name>.\startup_stm32f10x_ld_vl.s</Name>
           <ColumnNumber>0</ColumnNumber>
           <TopLine>148</TopLine>
           <CurrentLine>148</CurrentLine>
         </Doc>
         <Doc>
-          <Name>d:\E\Aprojects\RLC\v3_01\src\main.c</Name>
-          <ColumnNumber>19</ColumnNumber>
-          <TopLine>240</TopLine>
-          <CurrentLine>253</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>d:\E\Aprojects\RLC\v3_01\src\adc.c</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>639</TopLine>
-          <CurrentLine>640</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>d:\E\Aprojects\RLC\v3_01\src\event.h</Name>
-          <ColumnNumber>13</ColumnNumber>
+          <Name>d:\E\Aprojects\RLC\rlc-stm32f100\src\calcz.h</Name>
+          <ColumnNumber>24</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>12</CurrentLine>
+          <CurrentLine>9</CurrentLine>
         </Doc>
         <Doc>
-          <Name>d:\E\Aprojects\RLC\v3_01\src\event.c</Name>
+          <Name>d:\E\Aprojects\RLC\rlc-stm32f100\src\calibration.h</Name>
           <ColumnNumber>0</ColumnNumber>
           <TopLine>1</TopLine>
           <CurrentLine>1</CurrentLine>
         </Doc>
         <Doc>
-          <Name>d:\E\Aprojects\RLC\v3_01\src\calibration.c</Name>
-          <ColumnNumber>26</ColumnNumber>
-          <TopLine>265</TopLine>
-          <CurrentLine>265</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>d:\E\Aprojects\RLC\v3_01\src\flash.c</Name>
-          <ColumnNumber>9</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>17</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>d:\E\Aprojects\RLC\v3_01\src\display_float.c</Name>
-          <ColumnNumber>0</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>1</CurrentLine>
-        </Doc>
-        <Doc>
-          <Name>d:\E\Aprojects\RLC\v3_01\src\calcz.c</Name>
+          <Name>d:\E\Aprojects\RLC\rlc-stm32f100\src\calcz.c</Name>
           <ColumnNumber>25</ColumnNumber>
           <TopLine>354</TopLine>
           <CurrentLine>357</CurrentLine>
         </Doc>
         <Doc>
-          <Name>d:\E\Aprojects\RLC\v3_01\src\calibration.h</Name>
+          <Name>d:\E\Aprojects\RLC\rlc-stm32f100\src\display_float.c</Name>
+          <ColumnNumber>24</ColumnNumber>
+          <TopLine>1</TopLine>
+          <CurrentLine>4</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>d:\E\Aprojects\RLC\rlc-stm32f100\src\flash.c</Name>
+          <ColumnNumber>9</ColumnNumber>
+          <TopLine>1</TopLine>
+          <CurrentLine>17</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>d:\E\Aprojects\RLC\rlc-stm32f100\src\calibration.c</Name>
+          <ColumnNumber>26</ColumnNumber>
+          <TopLine>265</TopLine>
+          <CurrentLine>265</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>d:\E\Aprojects\RLC\rlc-stm32f100\src\event.c</Name>
           <ColumnNumber>0</ColumnNumber>
           <TopLine>1</TopLine>
           <CurrentLine>1</CurrentLine>
         </Doc>
         <Doc>
-          <Name>d:\E\Aprojects\RLC\v3_01\src\calcz.h</Name>
-          <ColumnNumber>24</ColumnNumber>
+          <Name>d:\E\Aprojects\RLC\rlc-stm32f100\src\event.h</Name>
+          <ColumnNumber>13</ColumnNumber>
           <TopLine>1</TopLine>
-          <CurrentLine>9</CurrentLine>
+          <CurrentLine>12</CurrentLine>
+        </Doc>
+        <Doc>
+          <Name>d:\E\Aprojects\RLC\rlc-stm32f100\src\main.c</Name>
+          <ColumnNumber>19</ColumnNumber>
+          <TopLine>240</TopLine>
+          <CurrentLine>253</CurrentLine>
         </Doc>
       </Documents>
     </MDIGroup>

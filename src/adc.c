@@ -242,6 +242,8 @@ void Init(void)
 #include "calcz.h"
 #endif
 
+uint32_t HandlerTicks;
+
 #if defined(TEST_CALIBR)
 #include "calibration.h"
 #endif
@@ -252,6 +254,7 @@ int64_t DisplaySinSumm = 0;
 int64_t DisplayCosSumm = 0;
 
 void TestMenu(void);
+void HandlerTime(void);
 
 void TestAdcMenu(void)
 {
@@ -290,8 +293,10 @@ void TestAdcMenu(void)
           case 3: /* Power off */
             GPIO_RESET(PWR_ON);
             return;
-          case 4: /* Contrast */
-//            CurrentFunc(Contrast);
+          case 4: /* Handler time */
+#if defined(TEST_TICK)
+            CurrentFunc(HandlerTime);
+#endif
             return;
           case 5:/*calibration dc */
 #if defined(TEST_CALIBR)
@@ -313,7 +318,9 @@ redraw:
 //  LcdChr(X_POSITION*0+Y_POSITION*1+16 + (1==MenuCounter)*INVERSE, "MSE");
   LcdChr(X_POSITION*0+Y_POSITION*2+16 + (2==MenuCounter)*INVERSE, "Light toggle");
   LcdChr(X_POSITION*0+Y_POSITION*3+16 + (3==MenuCounter)*INVERSE, "Power off");
-//  LcdChr(X_POSITION*0+Y_POSITION*4+16 + (4==MenuCounter)*INVERSE, "Contrast");
+#if defined(TEST_TICK)
+  LcdChr(X_POSITION*0+Y_POSITION*4+16 + (4==MenuCounter)*INVERSE, "Ticks");
+#endif
 #if defined(TEST_CALIBR)
   LcdChr(X_POSITION*0+Y_POSITION*5+16 + (5==MenuCounter)*INVERSE, "CalibrationDC");
 #endif
@@ -632,7 +639,46 @@ RedrawSumms:
   }
 }
 
+#if defined(TEST_TICK)
+void HandlerTime(void)
+{
+  if ( Event == EV_FUNC_FIRST )
+  {
+    LcdClear();
+    SCB_DEMCR |= 0x01000000;
+    DWT_CONTROL |= 1; // enable the counter
+    DWT_CYCCNT = 0;
+    HandlerTicks = 0;
+    goto redraw;
+  }
 
+  if ( (Event & EV_MASK) == EV_KEY_PRESSED || // нажата клавиша
+        (Event & EV_MASK) == EV_KEY_REPEATE)  // автонажатие
+  {
+    switch (Event & KEY_MASK)
+    {
+      case KEY_DOWN:
+      case KEY_UP:
+        DWT_CONTROL = 0;
+        SCB_DEMCR = 0;
+        CurrentFunc(TestAdcMenu);
+        return;
+      case KEY_ENTER:
+       goto redraw;
+    }
+  }
+return;
+
+redraw:
+  {
+    char Buf[9];
+    DisplayFloat(Buf, (float)DWT_CYCCNT);
+    LcdChr(X_POSITION*0+Y_POSITION*1+9, Buf);
+    DisplayFloat(Buf, (float)HandlerTicks);
+    LcdChr(X_POSITION*0+Y_POSITION*3+9, Buf);
+  }
+}
+#endif
 
 
 void main()

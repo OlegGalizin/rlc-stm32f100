@@ -93,6 +93,10 @@ void DMA1_Channel3_IRQHandler(void) /* Read ADC values */
 {
   int16_t Cur;
 
+#if defined(TEST_ADC)
+  uint32_t StartTime = DWT_CYCCNT;
+#endif
+
   if (DMA1->ISR & DMA_ISR_HTIF3 && /*   Half Transfer complete */
        (DMA1_Channel3->CCR & DMA_CCR3_HTIE) /* Half traisfer interrupt enabled */
       ) 
@@ -180,6 +184,10 @@ void DMA1_Channel3_IRQHandler(void) /* Read ADC values */
     }
   }
 #endif
+#if defined(TEST_ADC)
+  HandlerTicks =  HandlerTicks + (DWT_CYCCNT - StartTime);
+#endif
+
 }
 
 

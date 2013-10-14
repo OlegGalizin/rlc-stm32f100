@@ -344,7 +344,7 @@
             <uThumb>0</uThumb>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>STM32F10X_LD_VL,BIG,LCD_USART,AUTO_RESET, MSE, TEST_CALCZ, TEST_CALIBR TEST_ADC</Define>
+              <Define>STM32F10X_LD_VL,BIG,LCD_USART,AUTO_RESET, MSE, TEST_CALIBR TEST_ADC TEST_TICK</Define>
               <Undefine></Undefine>
               <IncludePath></IncludePath>
             </VariousControls>
